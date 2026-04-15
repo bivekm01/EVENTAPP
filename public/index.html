@@ -17,9 +17,17 @@
                 Nexus Events
             </div>
             <div class="nav-links">
-                <span id="user-greeting">Welcome!</span>
-                <button id="logout-btn" class="btn btn-outline">Logout</button>
+                <a href="#" class="nav-item active" data-target="dashboard-view">Dashboard</a>
+                <a href="#" class="nav-item" data-target="schedule-view">Schedule</a>
+                <a href="#" class="nav-item" data-target="announcements-view">Announcements</a>
+                <a href="#" class="nav-item" data-target="feedback-view">Feedback</a>
             </div>
+            <div class="nav-actions">
+                <span id="user-greeting">Welcome!</span>
+                <span id="user-role-badge" class="badge"></span>
+                <button id="logout-btn" class="btn btn-outline btn-sm">Logout</button>
+            </div>
+            <div class="mobile-menu-btn">☰</div>
         </div>
     </nav>
 
@@ -27,8 +35,8 @@
     <main id="auth-view" class="view">
         <div class="auth-container glass-panel">
             <div class="auth-header">
-                <h2>Welcome Back</h2>
-                <p>Sign in or create an account to manage your events.</p>
+                <h2>Welcome to Nexus</h2>
+                <p>Sign in or create an account to manage your college events.</p>
             </div>
             <div class="auth-tabs">
                 <button class="tab-btn active" data-tab="login">Login</button>
@@ -37,11 +45,11 @@
 
             <form id="login-form" class="auth-form active">
                 <div class="input-group">
-                    <label>Email</label>
+                    <label for="login-email">Email</label>
                     <input type="email" id="login-email" required placeholder="name@college.edu">
                 </div>
                 <div class="input-group">
-                    <label>Password</label>
+                    <label for="login-password">Password</label>
                     <input type="password" id="login-password" required placeholder="••••••••">
                 </div>
                 <button type="submit" class="btn btn-primary btn-block">Sign In</button>
@@ -49,16 +57,16 @@
 
             <form id="register-form" class="auth-form">
                 <div class="input-group">
-                    <label>Full Name</label>
+                    <label for="reg-name">Full Name</label>
                     <input type="text" id="reg-name" required placeholder="John Doe">
                 </div>
                 <div class="input-group">
-                    <label>Email</label>
+                    <label for="reg-email">Email</label>
                     <input type="email" id="reg-email" required placeholder="name@college.edu">
                 </div>
                 <div class="input-group">
-                    <label>Password</label>
-                    <input type="password" id="reg-password" required placeholder="••••••••">
+                    <label for="reg-password">Password (min 6 chars)</label>
+                    <input type="password" id="reg-password" required placeholder="••••••••" minlength="6">
                 </div>
                 <div class="input-group">
                     <label>Role</label>
@@ -78,42 +86,35 @@
         </div>
     </main>
 
-    <!-- Student Dashboard View -->
-    <main id="student-view" class="view hidden">
-        <div class="dashboard-container">
-            <div class="dashboard-header">
-                <h1>Upcoming Events</h1>
-                <p>Discover and register for amazing college events.</p>
-            </div>
-            <div class="events-grid" id="student-events-grid">
-                <!-- Events populated by JS -->
-            </div>
-        </div>
-    </main>
-
-    <!-- Organizer Dashboard View -->
-    <main id="organizer-view" class="view hidden">
+    <!-- Dashboard View (Student & Organizer) -->
+    <main id="dashboard-view" class="view hidden">
         <div class="dashboard-container">
             <div class="dashboard-header flex-header">
                 <div>
-                    <h1>My Managed Events</h1>
-                    <p>Create and manage your college events seamlessly.</p>
+                    <h1 id="db-title">Upcoming Events</h1>
+                    <p id="db-subtitle">Discover and register for amazing college events.</p>
                 </div>
-                <button id="open-create-modal" class="btn btn-primary">+ Create Event</button>
+                <!-- Only visible to organizers -->
+                <button id="open-create-modal" class="btn btn-primary hidden">+ Create Event</button>
             </div>
             
-            <div class="events-grid" id="organizer-events-grid">
-                <!-- Organizer events populated by JS -->
+            <div class="search-bar-container">
+                <input type="text" id="event-search" class="search-input" placeholder="Search events by title or venue...">
             </div>
 
-            <div class="registrations-section">
-                <h2>Recent Registrations</h2>
+            <div class="events-grid" id="events-grid">
+                <!-- Events populated by JS -->
+            </div>
+
+            <!-- Only visible to organizers -->
+            <div id="registrations-section" class="registrations-section hidden">
+                <h2 style="margin-bottom: 1rem;">Recent Registrations</h2>
                 <div class="table-container glass-panel">
                     <table id="registrations-table">
                         <thead>
                             <tr>
+                                <th>Event</th>
                                 <th>Student Name</th>
-                                <th>Email</th>
                                 <th>Department</th>
                                 <th>Phone</th>
                             </tr>
@@ -127,6 +128,64 @@
         </div>
     </main>
 
+    <!-- Schedule View -->
+    <main id="schedule-view" class="view hidden">
+        <div class="dashboard-container">
+            <div class="dashboard-header">
+                <h1>Event Schedule</h1>
+                <p>Plan your days ahead.</p>
+            </div>
+            <div class="schedule-container glass-panel" id="schedule-container">
+                <!-- Populated by JS -->
+            </div>
+        </div>
+    </main>
+
+    <!-- Announcements View -->
+    <main id="announcements-view" class="view hidden">
+        <div class="dashboard-container">
+            <div class="dashboard-header flex-header">
+                <div>
+                    <h1>Announcements</h1>
+                    <p>Stay updated with the latest college news.</p>
+                </div>
+                <!-- Only visible to organizers/admins -->
+                <button id="open-announce-modal" class="btn btn-primary hidden">+ Post Announcement</button>
+            </div>
+            <div class="announcements-feed" id="announcements-feed">
+                <!-- Populated by JS -->
+            </div>
+        </div>
+    </main>
+
+    <!-- Feedback View -->
+    <main id="feedback-view" class="view hidden">
+        <div class="dashboard-container" style="max-width: 600px; margin: 0 auto;">
+            <div class="dashboard-header text-center" style="text-align: center;">
+                <h1>Feedback</h1>
+                <p>We value your suggestions and feedback.</p>
+            </div>
+            <div class="glass-panel" style="padding: 2rem;">
+                <form id="feedback-form">
+                    <div class="input-group">
+                        <label for="feedback-type">Topic</label>
+                        <select id="feedback-type" required>
+                            <option value="">Select a topic...</option>
+                            <option value="Event Suggestion">Event Suggestion</option>
+                            <option value="Bug Report">Bug Report</option>
+                            <option value="General Feedback">General Feedback</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label for="feedback-text">Your Message</label>
+                        <textarea id="feedback-text" required rows="5" placeholder="Tell us what you think..."></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">Submit Feedback</button>
+                </form>
+            </div>
+        </div>
+    </main>
+
     <!-- Register for Event Modal (Student) -->
     <div id="register-event-modal" class="modal">
         <div class="modal-content glass-panel bounce-in">
@@ -135,11 +194,11 @@
             <form id="event-register-form">
                 <input type="hidden" id="reg-event-id">
                 <div class="input-group">
-                    <label>Phone Number</label>
+                    <label for="student-phone">Phone Number</label>
                     <input type="tel" id="student-phone" required placeholder="+1 234 567 8900">
                 </div>
                 <div class="input-group">
-                    <label>Department / Major</label>
+                    <label for="student-dept">Department / Major</label>
                     <input type="text" id="student-dept" required placeholder="Computer Science">
                 </div>
                 <button type="submit" class="btn btn-primary btn-block">Confirm Registration</button>
@@ -155,25 +214,25 @@
             <form id="manage-event-form">
                 <input type="hidden" id="manage-event-id">
                 <div class="input-group">
-                    <label>Event Title</label>
+                    <label for="event-title">Event Title</label>
                     <input type="text" id="event-title" required placeholder="Tech Symposium 2026">
                 </div>
                 <div class="input-row">
                     <div class="input-group">
-                        <label>Date</label>
+                        <label for="event-date">Date</label>
                         <input type="date" id="event-date" required>
-                    </div>
-                    <div class="input-group">
-                        <label>Time</label>
-                        <input type="time" id="event-time" required>
                     </div>
                 </div>
                 <div class="input-group">
-                    <label>Venue</label>
+                    <label for="event-venue">Venue</label>
                     <input type="text" id="event-venue" required placeholder="Main Auditorium">
                 </div>
                 <div class="input-group">
-                    <label>Description</label>
+                    <label for="event-image">Image URL (Optional)</label>
+                    <input type="url" id="event-image" placeholder="https://example.com/image.jpg">
+                </div>
+                <div class="input-group">
+                    <label for="event-desc">Description</label>
                     <textarea id="event-desc" required placeholder="Details about this event..." rows="3"></textarea>
                 </div>
                 <button type="submit" class="btn btn-primary btn-block">Save Event</button>
@@ -181,6 +240,32 @@
         </div>
     </div>
 
-    <script src="js/app.js"></script>
+    <!-- Post Announcement Modal (Organizer) -->
+    <div id="manage-announce-modal" class="modal">
+        <div class="modal-content glass-panel bounce-in">
+            <span class="close-modal">&times;</span>
+            <h2>Post Announcement</h2>
+            <form id="manage-announce-form">
+                <div class="input-group">
+                    <label for="announce-title">Title</label>
+                    <input type="text" id="announce-title" required placeholder="Important Update">
+                </div>
+                <div class="input-group">
+                    <label for="announce-desc">Message</label>
+                    <textarea id="announce-desc" required placeholder="Announcement content..." rows="4"></textarea>
+                </div>
+                <div class="input-group">
+                    <label class="custom-checkbox">
+                        <input type="checkbox" id="announce-urgent">
+                        Mark as Urgent
+                    </label>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">Post</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Use type="module" for Firebase SDK v10 -->
+    <script type="module" src="js/app.js"></script>
 </body>
 </html>
