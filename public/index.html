@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexus Events | Smart College Platform</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div id="toast-container"></div>
+
+    <nav id="navbar" class="hidden">
+        <div class="nav-content">
+            <div class="logo">
+                <span class="logo-icon">✨</span>
+                Nexus Events
+            </div>
+            <div class="nav-links">
+                <span id="user-greeting">Welcome!</span>
+                <button id="logout-btn" class="btn btn-outline">Logout</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Auth View -->
+    <main id="auth-view" class="view">
+        <div class="auth-container glass-panel">
+            <div class="auth-header">
+                <h2>Welcome Back</h2>
+                <p>Sign in or create an account to manage your events.</p>
+            </div>
+            <div class="auth-tabs">
+                <button class="tab-btn active" data-tab="login">Login</button>
+                <button class="tab-btn" data-tab="register">Register</button>
+            </div>
+
+            <form id="login-form" class="auth-form active">
+                <div class="input-group">
+                    <label>Email</label>
+                    <input type="email" id="login-email" required placeholder="name@college.edu">
+                </div>
+                <div class="input-group">
+                    <label>Password</label>
+                    <input type="password" id="login-password" required placeholder="••••••••">
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">Sign In</button>
+            </form>
+
+            <form id="register-form" class="auth-form">
+                <div class="input-group">
+                    <label>Full Name</label>
+                    <input type="text" id="reg-name" required placeholder="John Doe">
+                </div>
+                <div class="input-group">
+                    <label>Email</label>
+                    <input type="email" id="reg-email" required placeholder="name@college.edu">
+                </div>
+                <div class="input-group">
+                    <label>Password</label>
+                    <input type="password" id="reg-password" required placeholder="••••••••">
+                </div>
+                <div class="input-group">
+                    <label>Role</label>
+                    <div class="role-selector">
+                        <label class="radio-label">
+                            <input type="radio" name="role" value="student" required checked>
+                            <span class="radio-custom">Student</span>
+                        </label>
+                        <label class="radio-label">
+                            <input type="radio" name="role" value="organizer" required>
+                            <span class="radio-custom">Organizer</span>
+                        </label>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">Create Account</button>
+            </form>
+        </div>
+    </main>
+
+    <!-- Student Dashboard View -->
+    <main id="student-view" class="view hidden">
+        <div class="dashboard-container">
+            <div class="dashboard-header">
+                <h1>Upcoming Events</h1>
+                <p>Discover and register for amazing college events.</p>
+            </div>
+            <div class="events-grid" id="student-events-grid">
+                <!-- Events populated by JS -->
+            </div>
+        </div>
+    </main>
+
+    <!-- Organizer Dashboard View -->
+    <main id="organizer-view" class="view hidden">
+        <div class="dashboard-container">
+            <div class="dashboard-header flex-header">
+                <div>
+                    <h1>My Managed Events</h1>
+                    <p>Create and manage your college events seamlessly.</p>
+                </div>
+                <button id="open-create-modal" class="btn btn-primary">+ Create Event</button>
+            </div>
+            
+            <div class="events-grid" id="organizer-events-grid">
+                <!-- Organizer events populated by JS -->
+            </div>
+
+            <div class="registrations-section">
+                <h2>Recent Registrations</h2>
+                <div class="table-container glass-panel">
+                    <table id="registrations-table">
+                        <thead>
+                            <tr>
+                                <th>Student Name</th>
+                                <th>Email</th>
+                                <th>Department</th>
+                                <th>Phone</th>
+                            </tr>
+                        </thead>
+                        <tbody id="registrations-body">
+                            <!-- Populated by JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Register for Event Modal (Student) -->
+    <div id="register-event-modal" class="modal">
+        <div class="modal-content glass-panel bounce-in">
+            <span class="close-modal">&times;</span>
+            <h2 id="modal-event-title">Register for Event</h2>
+            <form id="event-register-form">
+                <input type="hidden" id="reg-event-id">
+                <div class="input-group">
+                    <label>Phone Number</label>
+                    <input type="tel" id="student-phone" required placeholder="+1 234 567 8900">
+                </div>
+                <div class="input-group">
+                    <label>Department / Major</label>
+                    <input type="text" id="student-dept" required placeholder="Computer Science">
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">Confirm Registration</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Create/Edit Event Modal (Organizer) -->
+    <div id="manage-event-modal" class="modal">
+        <div class="modal-content glass-panel bounce-in">
+            <span class="close-modal">&times;</span>
+            <h2 id="manage-event-modal-title">Create New Event</h2>
+            <form id="manage-event-form">
+                <input type="hidden" id="manage-event-id">
+                <div class="input-group">
+                    <label>Event Title</label>
+                    <input type="text" id="event-title" required placeholder="Tech Symposium 2026">
+                </div>
+                <div class="input-row">
+                    <div class="input-group">
+                        <label>Date</label>
+                        <input type="date" id="event-date" required>
+                    </div>
+                    <div class="input-group">
+                        <label>Time</label>
+                        <input type="time" id="event-time" required>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label>Venue</label>
+                    <input type="text" id="event-venue" required placeholder="Main Auditorium">
+                </div>
+                <div class="input-group">
+                    <label>Description</label>
+                    <textarea id="event-desc" required placeholder="Details about this event..." rows="3"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">Save Event</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/app.js"></script>
+</body>
+</html>
